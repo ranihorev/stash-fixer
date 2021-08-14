@@ -1,0 +1,27 @@
+{
+  "name": "StashFixer",
+  "version": "0.0.1",
+  "manifest_version": 2,
+  "description": "Replaces the commit message with the title of the PR",
+  "homepage_url": "https://duo.com/labs",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "background": {
+    "scripts": [
+      "hot-reload.js"
+    ]
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://stash.corp.netflix.com/*/pull-requests/*"
+      ],
+      "js": [
+        "js/content.js"
+      ]
+    }
+  ]
+}
