@@ -1,6 +1,6 @@
 {
   "name": "StashFixer",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "manifest_version": 3,
   "description": "Replaces the commit message with the title of the PR",
   "homepage_url": "https://github.com/ranihorev/stash-fixer",
