@@ -1,6 +1,6 @@
 {
   "name": "stash-pr-fixer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Replaces the commit message with something useful",
   "main": "index.js",
   "scripts": {

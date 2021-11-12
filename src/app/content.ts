@@ -1,36 +1,26 @@
 chrome.runtime.sendMessage({}, (response) => {
-  let checkReady = setInterval(() => {
-    if (document.readyState === "complete") {
-      clearInterval(checkReady);
-      retry(10, runScript);
-    }
-  }, 100);
+  runScript();
 });
 
-const retry = (maxRetries: number, fn: () => void) => {
-  console.log(`Running, attempts left: ${maxRetries}`);
-  try {
-    fn();
-  } catch (e) {
-    if (maxRetries <= 0) {
-      throw e;
-    }
-    setTimeout(() => retry(maxRetries - 1, fn), 500);
-  }
-};
-
 const runScript = () => {
-  const betterHeaderElem = document.querySelector(".pull-request-header h2");
+  const stringToRemove = /^Pull request #\d+: /i;
+  let observer = new MutationObserver((mutations) => {
+    for (let mutation of mutations) {
+      if (
+        (mutation.target as HTMLElement).classList.contains("atlaskit-portal")
+      ) {
+        for (let addedNode of mutation.addedNodes) {
+          const node = (addedNode as HTMLElement).querySelector(
+            'input[id="commit-message-title"]'
+          ) as HTMLInputElement | undefined;
+          if (node) {
+            node.value = node.value.replace(stringToRemove, "");
+            return;
+          }
+        }
+      }
+    }
+  });
 
-  if (!betterHeaderElem) {
-    throw new Error("Better header elem is missing");
-  }
-
-  const elem = document.querySelector("#commit-message");
-  if (elem) {
-    elem.innerHTML = betterHeaderElem.innerHTML;
-    elem.setAttribute("data-original-value", betterHeaderElem.innerHTML);
-  } else {
-    throw new Error("commit message elem was not found");
-  }
+  observer.observe(document, { childList: true, subtree: true });
 };
